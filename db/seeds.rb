@@ -4,10 +4,26 @@
 # Idempotente: pode ser executado várias vezes com `bin/rails db:seed`.
 
 articles = [
-  { title: "Introdução ao CI/CD com Jenkins", body: "Pipeline como código com Jenkinsfile declarativo.", published: true },
-  { title: "Dockerizando uma aplicação Rails", body: "Build multi-stage e imagem enxuta para produção.", published: true },
-  { title: "Testes com RSpec", body: "Model specs e request specs com FactoryBot.", published: true },
-  { title: "Rascunho: próximos passos", body: "Ideias ainda não publicadas.", published: false }
+  {
+    title: "Introdução ao CI/CD com Jenkins",
+    body: "Pipeline como código com Jenkinsfile declarativo.",
+    published: true
+  },
+  {
+    title: "Dockerizando uma aplicação Rails",
+    body: "Build multi-stage e imagem enxuta para produção.",
+    published: true
+  },
+  {
+    title: "Testes com RSpec",
+    body: "Model specs e request specs com FactoryBot.",
+    published: true
+  },
+  {
+    title: "Rascunho: próximos passos",
+    body: "Ideias ainda não publicadas.",
+    published: false
+  }
 ]
 
 articles.each do |attrs|
@@ -17,4 +33,4 @@ articles.each do |attrs|
   end
 end
 
-puts "Seed concluído: #{Article.count} artigos no banco."
+Rails.logger.info("Seed concluído: #{Article.count} artigos no banco.")
