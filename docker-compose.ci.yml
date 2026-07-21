@@ -24,8 +24,6 @@ services:
       db:
         condition: service_healthy
     # Carrega o schema no banco de teste (SEM rodar seeds) e roda os testes,
-    # gerando relatório JUnit para o Jenkins.
+    # gerando relatório JUnit em /rails/tmp/rspec.xml (extraído via `docker cp`
+    # pelo Jenkins — bind mounts não funcionam com o socket do Docker do host).
     command: bash -lc "bundle exec rails db:test:prepare && bundle exec rspec --format progress --format RspecJunitFormatter --out tmp/rspec.xml"
-    volumes:
-      - ./tmp:/rails/tmp
-      - ./coverage:/rails/coverage

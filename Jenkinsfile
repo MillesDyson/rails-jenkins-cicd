@@ -58,8 +58,17 @@ pipeline {
       steps {
         // Sobe Postgres efêmero + roda a suíte; --exit-code-from propaga a falha do RSpec.
         sh '''
+          set +e
           CI_IMAGE=$CI_IMAGE docker compose -f docker-compose.ci.yml up \
             --abort-on-container-exit --exit-code-from test
+          code=$?
+          # Extrai os relatórios de dentro do container para o workspace do Jenkins.
+          # (bind mounts não funcionam com o socket do Docker do host / DooD.)
+          cid=$(CI_IMAGE=$CI_IMAGE docker compose -f docker-compose.ci.yml ps -aq test)
+          mkdir -p tmp coverage
+          docker cp "$cid:/rails/tmp/rspec.xml" tmp/rspec.xml || true
+          docker cp "$cid:/rails/coverage/." coverage/ || true
+          exit $code
         '''
       }
       post {
@@ -67,7 +76,7 @@ pipeline {
           // Publica resultados dos testes e a cobertura, e derruba os containers.
           junit testResults: 'tmp/rspec.xml', allowEmptyResults: false
           archiveArtifacts artifacts: 'coverage/**', allowEmptyArchive: true, fingerprint: true
-          sh 'docker compose -f docker-compose.ci.yml down -v || true'
+          sh 'CI_IMAGE=$CI_IMAGE docker compose -f docker-compose.ci.yml down -v || true'
         }
       }
     }
