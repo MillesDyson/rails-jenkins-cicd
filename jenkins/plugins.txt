@@ -9,3 +9,6 @@ git
 junit
 credentials-binding
 timestamper
+# Visualização dos estágios (blocos com tempo) + interface moderna em tempo real.
+pipeline-stage-view
+blueocean
