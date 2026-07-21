@@ -95,7 +95,11 @@ pipeline {
     }
 
     stage('Push (Docker Hub)') {
-      when { branch 'main' }
+      // `branch 'main'` só funciona em jobs Multibranch (usa BRANCH_NAME).
+      // Neste job de branch única, checamos GIT_BRANCH (preenchido pelo plugin do Git).
+      when {
+        expression { env.GIT_BRANCH == 'origin/main' || env.GIT_BRANCH == 'main' }
+      }
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
                           usernameVariable: 'REG_USER', passwordVariable: 'REG_PASS')]) {
