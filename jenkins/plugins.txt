@@ -1,0 +1,11 @@
+# Plugins instalados na imagem do Jenkins.
+# Jenkins Configuration as Code (JCasC) + Job DSL fazem a configuração via arquivo.
+configuration-as-code
+job-dsl
+# Pipeline, Git, Docker e utilidades usadas pelo Jenkinsfile.
+workflow-aggregator
+docker-workflow
+git
+junit
+credentials-binding
+timestamper

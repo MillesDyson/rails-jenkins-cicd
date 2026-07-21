@@ -17,6 +17,8 @@
 /config/credentials/*.key
 /.env*
 !/.env.example
+# .env de qualquer subpasta (ex.: jenkins/.env com o token do Docker Hub)
+**/.env
 
 # Artefatos de teste e cobertura
 /coverage/

@@ -1,8 +1,10 @@
-# Sobe o Jenkins localmente:
-#   cd jenkins && docker compose up --build -d
-#   # senha inicial:
-#   docker compose exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
-#   # acesse http://localhost:8080
+# Sobe o Jenkins já configurado via JCasC (admin + credencial + job).
+#   cd jenkins
+#   cp .env.example .env   # e preencha os valores
+#   docker compose up --build -d
+#   # acesse http://localhost:8081 e faça login com JENKINS_ADMIN_ID/PASSWORD
+#
+# Não há mais senha inicial nem setup wizard: tudo vem do casc.yaml + .env.
 #
 # Observação de segurança: rodamos como root e montamos o socket do Docker do host
 # para simplificar o LAB local. Em produção, use um agente dedicado com permissões
@@ -11,8 +13,10 @@ services:
   jenkins:
     build: .
     user: root
+    env_file:
+      - .env
     ports:
-      - "8080:8080"   # UI web
+      - "8081:8080"   # UI web (8080 do host está em uso pelo cluster kind)
       - "50000:50000" # comunicação com agentes
     volumes:
       - jenkins_home:/var/jenkins_home

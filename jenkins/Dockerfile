@@ -1,6 +1,7 @@
-# Jenkins LTS com o CLI do Docker + compose embutidos, para que o pipeline
-# consiga executar `docker build` / `docker compose` usando o socket do host
-# (padrão "Docker-outside-of-Docker").
+# Jenkins LTS com:
+#   - Docker CLI + compose (para o pipeline rodar `docker build`/`docker compose`)
+#   - JCasC (Jenkins Configuration as Code): admin, credenciais e job vêm de arquivo
+#   - setup wizard desativado (nada de configuração manual na primeira subida)
 FROM jenkins/jenkins:lts-jdk21
 
 USER root
@@ -17,8 +18,13 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends docker-ce-cli docker-compose-plugin && \
     rm -rf /var/lib/apt/lists/*
 
-# Plugins essenciais já embutidos (evita configuração manual na primeira subida).
-RUN jenkins-plugin-cli --plugins \
-    "workflow-aggregator docker-workflow git junit credentials-binding timestamper"
-
 USER jenkins
+
+# Instala os plugins a partir do arquivo (inclui configuration-as-code e job-dsl).
+COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
+
+# Desativa o assistente de setup inicial e aponta o JCasC para o nosso arquivo.
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+ENV CASC_JENKINS_CONFIG=/var/jenkins_conf/casc.yaml
+COPY casc.yaml /var/jenkins_conf/casc.yaml
