@@ -1,0 +1,23 @@
+# Sobe o Jenkins localmente:
+#   cd jenkins && docker compose up --build -d
+#   # senha inicial:
+#   docker compose exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+#   # acesse http://localhost:8080
+#
+# Observação de segurança: rodamos como root e montamos o socket do Docker do host
+# para simplificar o LAB local. Em produção, use um agente dedicado com permissões
+# restritas (ou DinD isolado) em vez de expor o socket do host.
+services:
+  jenkins:
+    build: .
+    user: root
+    ports:
+      - "8080:8080"   # UI web
+      - "50000:50000" # comunicação com agentes
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+volumes:
+  jenkins_home:

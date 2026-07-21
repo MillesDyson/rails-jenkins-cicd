@@ -1,0 +1,30 @@
+# Ambiente efêmero usado pelo pipeline do Jenkins para rodar os testes.
+# Sobe um PostgreSQL, aguarda ficar saudável, prepara o banco de teste e roda o RSpec.
+# A imagem de teste (target "test") é injetada via variável CI_IMAGE.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+
+  test:
+    image: ${CI_IMAGE:-articles-api:ci}
+    environment:
+      RAILS_ENV: test
+      DATABASE_HOST: db
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+    depends_on:
+      db:
+        condition: service_healthy
+    # Prepara o schema e roda os testes gerando relatório JUnit para o Jenkins.
+    command: bash -lc "bundle exec rails db:prepare && bundle exec rspec --format progress --format RspecJunitFormatter --out tmp/rspec.xml"
+    volumes:
+      - ./tmp:/rails/tmp
+      - ./coverage:/rails/coverage

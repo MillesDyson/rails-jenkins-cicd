@@ -1,0 +1,27 @@
+# Arquivos de log e temporários
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+/tmp/pids/*
+!/tmp/pids/.keep
+
+# Armazenamento de arquivos (uploads / SQLite)
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/.keep
+
+# Segredos — NUNCA versionar
+/config/master.key
+/config/credentials/*.key
+/.env*
+!/.env.example
+
+# Artefatos de teste e cobertura
+/coverage/
+/spec/examples.txt
+/tmp/rspec.xml
+
+# Cache do bundler / bootsnap
+/.bundle

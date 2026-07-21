@@ -1,0 +1,47 @@
+plugins:
+  - rubocop-rails
+  - rubocop-performance
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.3
+  NewCops: enable
+  Exclude:
+    - "bin/**/*"
+    - "db/schema.rb"
+    - "db/migrate/*"
+    - "config/**/*"
+    - "vendor/**/*"
+    - "tmp/**/*"
+    - "log/**/*"
+
+# Estilo de documentação não é obrigatório neste projeto de estudo.
+Style/Documentation:
+  Enabled: false
+
+# String literals sem preferência forçada.
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+# Specs naturalmente têm blocos longos.
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
+
+# Limite de linha mais confortável.
+Layout/LineLength:
+  Max: 120
+
+# Ajustes específicos do rubocop-rspec para o estilo dos nossos testes.
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+# Aceita prefixos de contexto em português (o projeto é escrito em pt-BR).
+RSpec/ContextWording:
+  Prefixes:
+    - quando
+    - com
+    - sem

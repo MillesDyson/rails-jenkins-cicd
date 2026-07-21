@@ -1,0 +1,15 @@
+version: 2
+updates:
+  # Atualizações das gems do Bundler
+  - package-ecosystem: bundler
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+
+  # Atualizações das imagens base do Docker (Dockerfile e composes)
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
