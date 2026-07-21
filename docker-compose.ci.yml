@@ -23,8 +23,9 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    # Prepara o schema e roda os testes gerando relatório JUnit para o Jenkins.
-    command: bash -lc "bundle exec rails db:prepare && bundle exec rspec --format progress --format RspecJunitFormatter --out tmp/rspec.xml"
+    # Carrega o schema no banco de teste (SEM rodar seeds) e roda os testes,
+    # gerando relatório JUnit para o Jenkins.
+    command: bash -lc "bundle exec rails db:test:prepare && bundle exec rspec --format progress --format RspecJunitFormatter --out tmp/rspec.xml"
     volumes:
       - ./tmp:/rails/tmp
       - ./coverage:/rails/coverage
