@@ -2,6 +2,8 @@
 # Jenkins Configuration as Code (JCasC) + Job DSL fazem a configuração via arquivo.
 configuration-as-code
 job-dsl
+# Autorização baseada em papéis (admin / developer / read-only).
+role-strategy
 # Pipeline, Git, Docker e utilidades usadas pelo Jenkinsfile.
 workflow-aggregator
 docker-workflow

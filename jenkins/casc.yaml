@@ -6,16 +6,67 @@
 jenkins:
   systemMessage: "Articles API — CI/CD (configurado via JCasC)"
   numExecutors: 2
-  # Usuário admin criado a partir de variáveis de ambiente (sem setup manual).
+  # Usuários criados a partir de variáveis de ambiente (senhas vêm do .env).
   securityRealm:
     local:
       allowsSignup: false
       users:
         - id: "${JENKINS_ADMIN_ID:-admin}"
           password: "${JENKINS_ADMIN_PASSWORD:-admin}"
+        - id: "developer"
+          password: "${DEVELOPER_PASSWORD}"
+        - id: "viewer1"
+          password: "${VIEWER1_PASSWORD}"
+        - id: "viewer2"
+          password: "${VIEWER2_PASSWORD}"
+
+  # Autorização baseada em papéis (plugin role-strategy).
   authorizationStrategy:
-    loggedInUsersCanDoAnything:
-      allowAnonymousRead: false
+    roleBased:
+      roles:
+        global:
+          # admin: controle total. "Overall/Administer" já concede TODAS as permissões.
+          - name: "admin"
+            pattern: ".*"
+            permissions:
+              - "Overall/Administer"
+              - "Overall/Read"
+            entries:
+              - USER: "${JENKINS_ADMIN_ID:-admin}"
+
+          # developer: "metade" — mexe em jobs/builds/views, mas NÃO administra,
+          # NÃO gerencia credenciais/agentes e NÃO apaga jobs/builds.
+          - name: "developer"
+            pattern: ".*"
+            permissions:
+              - "Overall/Read"
+              - "Job/Read"
+              - "Job/Discover"
+              - "Job/Build"
+              - "Job/Cancel"
+              - "Job/Configure"
+              - "Job/Create"
+              - "Job/Move"
+              - "Job/Workspace"
+              - "Run/Replay"
+              - "Run/Update"
+              - "View/Read"
+              - "View/Create"
+              - "View/Configure"
+              - "SCM/Tag"
+            entries:
+              - USER: "developer"
+
+          # ReadOnly: só leitura — vê jobs, builds e logs, sem alterar nada.
+          - name: "ReadOnly"
+            pattern: ".*"
+            permissions:
+              - "Overall/Read"
+              - "Job/Read"
+              - "View/Read"
+            entries:
+              - USER: "viewer1"
+              - USER: "viewer2"
 
 # Credencial do Docker Hub — valores injetados por variáveis de ambiente.
 credentials:
