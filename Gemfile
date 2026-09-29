@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "rails", "~> 8.0"
+gem "rails", "~> 8.1"
 # Banco de dados
 gem "pg", "~> 1.1"
 # Servidor de aplicação
