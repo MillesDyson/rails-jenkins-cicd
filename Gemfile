@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 gem "rails", "~> 8.0"
 # Banco de dados
-gem "pg", "~> 1.1"
+gem "pg", "~> 1.7"
 # Servidor de aplicação
 gem "puma", ">= 5.0"
 # CORS para permitir chamadas cross-origin à API
