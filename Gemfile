@@ -20,7 +20,7 @@ group :development, :test do
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
 
   # Framework de testes
-  gem "rspec-rails", "~> 7.1"
+  gem "rspec-rails", "~> 8.0"
   # Fábricas de dados de teste
   gem "factory_bot_rails"
   # Matchers expressivos para models/requests
