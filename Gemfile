@@ -24,7 +24,7 @@ group :development, :test do
   # Fábricas de dados de teste
   gem "factory_bot_rails"
   # Matchers expressivos para models/requests
-  gem "shoulda-matchers", "~> 6.0"
+  gem "shoulda-matchers", "~> 8.0"
 end
 
 group :development do

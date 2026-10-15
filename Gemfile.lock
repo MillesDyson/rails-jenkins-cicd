@@ -279,8 +279,8 @@ GEM
       rubocop (~> 1.86, >= 1.86.2)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
-    shoulda-matchers (6.5.0)
-      activesupport (>= 5.2.0)
+    shoulda-matchers (8.0.1)
+      activesupport (>= 7.2)
     simplecov (1.0.2)
     thor (1.5.0)
     timeout (0.6.1)
@@ -326,7 +326,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   rubocop-rspec
-  shoulda-matchers (~> 6.0)
+  shoulda-matchers (~> 8.0)
   simplecov
   tzinfo-data
 
